@@ -73,3 +73,4 @@ with open(file_name, 'w', newline='') as csvfile:
 a = 24
 b = 2
 c = a
+aaa = a
