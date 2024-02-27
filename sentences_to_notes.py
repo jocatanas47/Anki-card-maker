@@ -19,9 +19,16 @@ def word_to_definition(word):
         for definition in definitions:
             string += definition["partOfSpeech"]
             string += "<br>"
+            flag_first = True
             for line in definition["text"]:
-                string += line
+                if flag_first:
+                    string += f"<b>{line}</b>"
+                    string += "<ol>"
+                    flag_first = False
+                else:
+                    string += f"<li>{line}</li>"
                 string += "<br>"
+            string += "</ol>"
     return string
 
 def sentences_to_notes(sentences, lemmas):
