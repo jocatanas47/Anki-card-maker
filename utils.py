@@ -1,3 +1,5 @@
+import spacy
+
 def load_dictionary(filename):
     dictionary = {}
     with open(filename, "r") as file:
@@ -7,6 +9,7 @@ def load_dictionary(filename):
     return dictionary
 
 def add_lemmas(dictionary, sentences):
+    nlp = spacy.load("de_core_news_sm")
     for sentence in sentences:
         doc = nlp(sentence)
         for token in doc:

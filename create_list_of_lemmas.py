@@ -1,10 +1,7 @@
 import os
 import argparse
-import spacy
 from utils import load_dictionary
 from utils import add_lemmas
-
-nlp = spacy.load("de_core_news_sm")
 
 def get_input_sentences(filename):
     first_column = []
