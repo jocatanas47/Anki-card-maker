@@ -8,7 +8,7 @@ from utils import load_sentences
 
 def get_wiktionary_entries(word):
     parser = wiktionaryparser.WiktionaryParser()
-    entry = parser.fetch(word, 'german')
+    entry = parser.fetch(word, "german")
     return entry
 
 def word_to_definition(word):
@@ -26,7 +26,7 @@ def word_to_definition(word):
 
 def sentences_to_notes(sentences, lemmas):
     nlp = spacy.load("de_core_news_sm")
-    translator = GoogleTranslator(source='de', target='en')
+    translator = GoogleTranslator(source="de", target="en")
     notes = []
     for sentence in sentences:
         note = []
@@ -67,3 +67,6 @@ def main():
     with open(output_csv, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(notes)
+
+if __name__ == "__main__":
+    main()

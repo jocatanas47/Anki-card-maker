@@ -5,9 +5,9 @@ from utils import add_lemmas
 
 def get_input_sentences(filename):
     first_column = []
-    with open(filename, 'r') as file:
+    with open(filename, "r") as file:
         for line in file:
-            columns = line.strip().split('\t')
+            columns = line.strip().split("\t")
             first_column_value = columns[0]
             first_column.append(first_column_value)
     return first_column
@@ -28,10 +28,10 @@ def main():
     sentences = get_input_sentences(input_txt)
     lemmas = add_lemmas(lemmas, sentences)
 
-    with open(output_txt, 'w', encoding='utf-8') as file:
+    with open(output_txt, "w", encoding="utf-8") as file:
         for lemma in lemmas:
             if not lemma.isdigit():
-                file.write(lemma + '\n')
+                file.write(lemma + "\n")
 
 if __name__ == "__main__":
     main()
