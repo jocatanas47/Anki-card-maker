@@ -1,7 +1,7 @@
 import os
 import argparse
-from utils import load_dictionary
-from utils import add_lemmas
+from note_utils import load_dictionary
+from note_utils import add_lemmas
 
 def get_input_sentences(filename):
     first_column = []

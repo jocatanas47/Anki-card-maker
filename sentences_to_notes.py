@@ -3,8 +3,8 @@ import argparse
 import spacy
 import wiktionaryparser
 from deep_translator import GoogleTranslator
-from utils import load_dictionary
-from utils import load_sentences
+from note_utils import load_dictionary
+from note_utils import load_sentences
 
 def get_wiktionary_entries(word):
     parser = wiktionaryparser.WiktionaryParser()
