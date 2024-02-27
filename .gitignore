@@ -1,6 +1,6 @@
 *.txt
 *.csv
-.venv/
-izvuceni
-izvuceno
 __pycache__/
+.venv/
+.vscode/
+izvuceno
