@@ -53,7 +53,7 @@ def sentences_to_notes(sentences, lemmas):
         note.append(translator.translate(sentence))
         note.append(definitions)
         notes.append(note)
-    return notes
+    return notes, {**lemmas, **helper_dictionary}
 
 def main():
     parser = argparse.ArgumentParser()
@@ -68,11 +68,16 @@ def main():
     sentences = load_sentences(sentences_txt)
     lemmas = load_dictionary(dictionary_txt)
 
-    notes = sentences_to_notes(sentences, lemmas)
+    notes, lemmas = sentences_to_notes(sentences, lemmas)
     
     with open(output_csv, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(notes)
+
+    with open(dictionary_txt, "w", encoding="utf-8") as file:
+        for lemma in lemmas:
+            if not lemma.isdigit():
+                file.write(lemma + "\n")
 
 if __name__ == "__main__":
     main()
