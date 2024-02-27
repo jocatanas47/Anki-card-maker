@@ -61,11 +61,8 @@ for sentence in sentences:
     new_output.append(new_definitions)
     output.append(new_output)
 
-# print(output)
-
 file_name = 'data.csv'
 
-# Write the data to a CSV file
 with open(file_name, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows(output)
