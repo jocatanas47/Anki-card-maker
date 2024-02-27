@@ -1,6 +1,8 @@
 import os
 import argparse
 import spacy
+from utils import load_dictionary
+from utils import add_lemmas
 
 nlp = spacy.load("de_core_news_sm")
 
@@ -12,23 +14,6 @@ def get_input_sentences(filename):
             first_column_value = columns[0]
             first_column.append(first_column_value)
     return first_column
-
-def load_dictionary(filename):
-    dictionary = {}
-    with open(filename, 'r') as file:
-        for line in file:
-            key = line.strip()
-            dictionary[key] = True
-    return dictionary
-
-def add_lemmas(dictionary, sentences):
-    for sentence in sentences:
-        doc = nlp(sentence)
-        for token in doc:
-            lemma = token.lemma_
-            if lemma not in dictionary:
-                dictionary[lemma] = True
-    return dictionary
 
 def main():
     parser = argparse.ArgumentParser()
