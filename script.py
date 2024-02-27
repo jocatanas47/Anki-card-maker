@@ -27,11 +27,9 @@ nlp = spacy.load("de_core_news_sm")
 
 translator = GoogleTranslator(source='de', target='en')
 
-sentences = []
+
 output = []
-with open('izvuceni', 'r') as file:
-    for line in file:
-        sentences.append(line)
+
 
 def load_dictionary(filename):
     dictionary = {}
