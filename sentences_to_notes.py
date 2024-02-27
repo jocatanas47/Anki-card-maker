@@ -28,6 +28,7 @@ def sentences_to_notes(sentences, lemmas):
     nlp = spacy.load("de_core_news_sm")
     translator = GoogleTranslator(source="de", target="en")
     notes = []
+    helper_dictionary = {}
     for sentence in sentences:
         note = []
 
@@ -37,11 +38,15 @@ def sentences_to_notes(sentences, lemmas):
         doc = nlp(sentence)
         for token in doc:
             lemma = token.lemma_
-            if lemma in lemmas:
+            if lemma in helper_dictionary:
                 modified_sentence += token.text
             else:
-                modified_sentence += f"<b>{token.text}</b>"
-                definitions += word_to_definition(lemma)
+                helper_dictionary[lemma] = True
+                if lemma in lemmas:
+                    modified_sentence += token.text
+                else:
+                    modified_sentence += f"<b>{token.text}</b>"
+                    definitions += word_to_definition(lemma)
             modified_sentence += " "
 
         note.append(modified_sentence)
