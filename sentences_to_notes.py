@@ -48,6 +48,7 @@ def sentences_to_notes(sentences, lemmas):
         note.append(translator.translate(sentence))
         note.append(definitions)
         notes.append(note)
+    return notes
 
 def main():
     parser = argparse.ArgumentParser()
