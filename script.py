@@ -2,6 +2,8 @@ from deep_translator import GoogleTranslator
 import spacy
 import wiktionaryparser
 import csv
+from utils import load_dictionary
+from utils import add_lemmas
 
 def get_wiktionary_entries(word):
     parser = wiktionaryparser.WiktionaryParser()
