@@ -70,4 +70,4 @@ with open(file_name, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows(output)
 
-    
+a = 24
