@@ -81,10 +81,11 @@ def main():
         writer = csv.writer(csvfile)
         writer.writerows(notes)
 
-    with open(dictionary_txt, "w", encoding="utf-8") as file:
+    with open("a_" + dictionary_txt, "w", encoding="utf-8") as file:
         for lemma in lemmas:
             if not lemma.isdigit():
                 file.write(lemma + "\n")
 
 if __name__ == "__main__":
+    # TODO: choose a better lemmatization algo
     main()
