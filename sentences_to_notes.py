@@ -1,12 +1,20 @@
+import os
 import csv
 import argparse
 import spacy
 import nltk
 import wiktionaryparser
+from datetime import datetime
 from deep_translator import GoogleTranslator
 from HanTa import HanoverTagger as ht
 from note_utils import load_dictionary
 from note_utils import load_sentences
+
+def get_newest_file(folder):
+    files = os.listdir(folder)
+    files = [os.path.join(folder, file) for file in files]
+    newest_file = max(files, key=os.path.getmtime)
+    return newest_file
 
 def get_wiktionary_entries(word):
     parser = wiktionaryparser.WiktionaryParser()
@@ -68,25 +76,42 @@ def sentences_to_notes(sentences, lemmas):
     return notes, {**lemmas, **helper_dictionary}
 
 def main():
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+    output_dictionary = f"{timestamp}.txt"
+
+    dictionary_folder = "dictionaries"
+    input_folder = "inputs"
+    output_folder = "outputs"
+
     parser = argparse.ArgumentParser()
     parser.add_argument("input_sentences")
-    parser.add_argument("input_dictionary")
-    parser.add_argument("output")
-    args = parser.parse_args()
-    sentences_txt = args.input_sentences
-    dictionary_txt = args.input_dictionary
-    output_csv = args.output
+    parser.add_argument("--output", "-o", default=None)
+    parser.add_argument("--dictionary", "-d", default=None)
 
-    sentences = load_sentences(sentences_txt)
-    lemmas = load_dictionary(dictionary_txt)
+    args = parser.parse_args()
+    sentences_file = args.input_sentences
+    output_file = args.output
+    dictionary_file = args.dictionary
+
+    if output_file:
+        output_path = os.path.join(output_folder, output_file)
+    else:
+        output_path = os.path.join(output_folder, f"{timestamp}.csv")
+
+    if not dictionary_file:
+        dictionary_file = get_newest_file(dictionary_folder)
+    
+    sentences = load_sentences(sentences_file)
+    lemmas = load_dictionary(dictionary_file)
 
     notes, lemmas = sentences_to_notes(sentences, lemmas)
     
-    with open(output_csv, "w", newline="") as csvfile:
+    with open(output_path, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(notes)
 
-    with open("a_" + dictionary_txt, "w", encoding="utf-8") as file:
+    with open(output_dictionary, "w", encoding="utf-8") as file:
         for lemma in lemmas:
             if not lemma.isdigit():
                 file.write(lemma + "\n")
