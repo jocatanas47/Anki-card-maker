@@ -55,6 +55,8 @@ def sentences_to_notes(sentences, lemmas):
         sentence_tokens = nltk.word_tokenize(sentence)
         analyzed_sentence = tagger.tag_sent(sentence_tokens)
         for word, lemma, _ in analyzed_sentence:
+            if lemma in [".", ",", ":", ";"]:
+                modified_sentence_parts.pop()
             if lemma in helper_dictionary:
                 modified_sentence_parts.append(word)
             else:
