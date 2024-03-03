@@ -36,7 +36,7 @@ def word_to_definition(word):
 def sentences_to_notes(sentences, lemmas):
     tagger = ht.HanoverTagger ('morphmodel_ger.pgz')
     translator = GoogleTranslator(source="de", target="en")
-    
+
     notes = []
     helper_dictionary = {}
     for sentence in sentences:
@@ -92,5 +92,4 @@ def main():
                 file.write(lemma + "\n")
 
 if __name__ == "__main__":
-    # TODO: choose a better lemmatization algo
     main()
