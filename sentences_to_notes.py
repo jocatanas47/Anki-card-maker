@@ -1,7 +1,6 @@
 import os
 import csv
 import argparse
-import spacy
 import nltk
 import wiktionaryparser
 from datetime import datetime
