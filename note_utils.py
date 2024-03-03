@@ -1,4 +1,5 @@
-import spacy
+import nltk
+from HanTa import HanoverTagger as ht
 
 def load_dictionary(filename):
     dictionary = {}
@@ -9,11 +10,12 @@ def load_dictionary(filename):
     return dictionary
 
 def add_lemmas(dictionary, sentences):
-    nlp = spacy.load("de_core_news_sm")
+    tagger = ht.HanoverTagger ('morphmodel_ger.pgz')
     for sentence in sentences:
-        doc = nlp(sentence)
-        for token in doc:
-            lemma = token.lemma_
+        sentence_tokens = nltk.word_tokenize(sentence)
+        analyzed_sentence = tagger.tag_sent(sentence_tokens)
+        lemmata = [analysis[1] for analysis in analyzed_sentence]
+        for lemma in lemmata:
             if lemma not in dictionary:
                 dictionary[lemma] = True
     return dictionary
