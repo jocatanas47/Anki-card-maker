@@ -78,11 +78,12 @@ def sentences_to_notes(sentences, lemmas):
 def main():
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    output_dictionary = f"{timestamp}.txt"
-
     dictionary_folder = "dictionaries"
     input_folder = "inputs"
     output_folder = "outputs"
+
+    output_dictionary = f"{timestamp}.txt"
+    output_dictionary_path = os.path.join(dictionary_folder, output_dictionary)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("input_sentences")
@@ -111,7 +112,7 @@ def main():
         writer = csv.writer(csvfile)
         writer.writerows(notes)
 
-    with open(output_dictionary, "w", encoding="utf-8") as file:
+    with open(output_dictionary_path, "w", encoding="utf-8") as file:
         for lemma in lemmas:
             if not lemma.isdigit():
                 file.write(lemma + "\n")
