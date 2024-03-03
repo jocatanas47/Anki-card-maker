@@ -22,23 +22,23 @@ def get_wiktionary_entries(word):
 
 def word_to_definition(word):
     entries = get_wiktionary_entries(word)
-    string = ""
+    definition_parts = []
     for entry in entries:
         definitions = entry["definitions"]
         for definition in definitions:
-            string += definition["partOfSpeech"]
-            string += "<br>"
+            definition_parts.append(definition["partOfSpeech"])
+            definition_parts.append("<br>")
             flag_first = True
             for line in definition["text"]:
                 if flag_first:
-                    string += f"<b>{line}</b>"
-                    string += "<ol>"
+                    definition_parts.append(f"<b>{line}</b>")
+                    definition_parts.append("<ol>")
                     flag_first = False
                 else:
-                    string += f"<li>{line}</li>"
-                string += "<br>"
-            string += "</ol>"
-    return string
+                    definition_parts.append(f"<li>{line}</li>")
+                definition_parts.append("<br>")
+            definition_parts.append("</ol>")
+    return definition_parts
 
 def sentences_to_notes(sentences, lemmas):
     tagger = ht.HanoverTagger ('morphmodel_ger.pgz')
@@ -49,28 +49,26 @@ def sentences_to_notes(sentences, lemmas):
     for sentence in sentences:
         note = []
 
-        modified_sentence = ""
-        definitions = ""
+        modified_sentence_parts = []
+        definitions_parts = []
 
         sentence_tokens = nltk.word_tokenize(sentence)
         analyzed_sentence = tagger.tag_sent(sentence_tokens)
-        for analysis in analyzed_sentence:
-            word = analysis[0]
-            lemma = analysis[1]
+        for word, lemma, _ in analyzed_sentence:
             if lemma in helper_dictionary:
-                modified_sentence += word
+                modified_sentence_parts.append(word)
             else:
                 helper_dictionary[lemma] = True
                 if lemma in lemmas:
-                    modified_sentence += word
+                    modified_sentence_parts.append(word)
                 else:
-                    modified_sentence += f"<b>{word}</b>"
-                    definitions += word_to_definition(lemma)
-            modified_sentence += " "
+                    modified_sentence_parts.append(f"<b>{word}</b>")
+                    definitions_parts.extend(word_to_definition(lemma))
+            modified_sentence_parts.append(" ")
 
-        note.append(modified_sentence)
+        note.append("".join(modified_sentence_parts))
         note.append(translator.translate(sentence))
-        note.append(definitions)
+        note.append("".join(definitions_parts))
         notes.append(note)
     return notes, {**lemmas, **helper_dictionary}
 
