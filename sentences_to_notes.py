@@ -1,8 +1,10 @@
 import csv
 import argparse
 import spacy
+import nltk
 import wiktionaryparser
 from deep_translator import GoogleTranslator
+from HanTa import HanoverTagger as ht
 from note_utils import load_dictionary
 from note_utils import load_sentences
 
@@ -32,8 +34,9 @@ def word_to_definition(word):
     return string
 
 def sentences_to_notes(sentences, lemmas):
-    nlp = spacy.load("de_core_news_sm")
+    tagger = ht.HanoverTagger ('morphmodel_ger.pgz')
     translator = GoogleTranslator(source="de", target="en")
+    
     notes = []
     helper_dictionary = {}
     for sentence in sentences:
@@ -42,17 +45,19 @@ def sentences_to_notes(sentences, lemmas):
         modified_sentence = ""
         definitions = ""
 
-        doc = nlp(sentence)
-        for token in doc:
-            lemma = token.lemma_
+        sentence_tokens = nltk.word_tokenize(sentence)
+        analyzed_sentence = tagger.tag_sent(sentence_tokens)
+        for analysis in analyzed_sentence:
+            word = analysis[0]
+            lemma = analysis[1]
             if lemma in helper_dictionary:
-                modified_sentence += token.text
+                modified_sentence += word
             else:
                 helper_dictionary[lemma] = True
                 if lemma in lemmas:
-                    modified_sentence += token.text
+                    modified_sentence += word
                 else:
-                    modified_sentence += f"<b>{token.text}</b>"
+                    modified_sentence += f"<b>{word}</b>"
                     definitions += word_to_definition(lemma)
             modified_sentence += " "
 
