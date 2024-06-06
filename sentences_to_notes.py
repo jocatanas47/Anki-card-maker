@@ -2,7 +2,7 @@ import os
 import csv
 import argparse
 import nltk
-import wiktionaryparser
+import wiktionary_parser_modified
 from datetime import datetime
 from deep_translator import GoogleTranslator
 from HanTa import HanoverTagger as ht
@@ -16,7 +16,7 @@ def get_newest_file(folder):
     return newest_file
 
 def get_wiktionary_entries(word):
-    parser = wiktionaryparser.WiktionaryParser()
+    parser = wiktionary_parser_modified.WiktionaryParser()
     entry = parser.fetch(word, "german")
     return entry
 
