@@ -241,6 +241,7 @@ class WiktionaryParser(object):
 
         for pronunciation_index, pronunciation_id, _ in pronunciation_id_list:
             pronunciation_text = []
+            # dodao h4 svuda jer moze i to da bude ako ima vise def na stranici
             span_tag = self.soup.find_all(['h3', 'h4'], {'id': pronunciation_id})[0]
             list_tag = span_tag.parent
             while list_tag.name != 'ul':
