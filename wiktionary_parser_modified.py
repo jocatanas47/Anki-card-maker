@@ -224,13 +224,7 @@ class WiktionaryParser(object):
             'related': self.parse_related_words(word_contents),
             'pronunciations': self.parse_pronunciations(word_contents),
         }
-        print(word_data)
         json_obj_list = self.map_to_object(word_data)
-        print(json_obj_list)
-
-        word_data = self.parse_examples(word_contents)
-
-
         return json_obj_list
 
     def parse_pronunciations(self, word_contents):
@@ -379,5 +373,4 @@ class WiktionaryParser(object):
         self.soup = BeautifulSoup(response.text.replace('>\n<', '><'), 'html.parser')
         self.current_word = word
         self.clean_html()
-        print(word)
         return self.get_word_data(language.lower())
