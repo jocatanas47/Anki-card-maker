@@ -1,5 +1,12 @@
+import os
 import nltk
 from HanTa import HanoverTagger as ht
+
+def get_newest_file(folder):
+    files = os.listdir(folder)
+    files = [os.path.join(folder, file) for file in files]
+    newest_file = max(files, key=os.path.getmtime)
+    return newest_file
 
 def load_dictionary(filename):
     dictionary = {}
