@@ -8,12 +8,7 @@ from deep_translator import GoogleTranslator
 from HanTa import HanoverTagger as ht
 from note_utils import load_dictionary
 from note_utils import load_sentences
-
-def get_newest_file(folder):
-    files = os.listdir(folder)
-    files = [os.path.join(folder, file) for file in files]
-    newest_file = max(files, key=os.path.getmtime)
-    return newest_file
+from note_utils import get_newest_file
 
 def get_wiktionary_entries(word):
     parser = wiktionary_parser_modified.WiktionaryParser()
