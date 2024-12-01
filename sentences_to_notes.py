@@ -71,46 +71,18 @@ def sentences_to_notes(sentences, lemmas):
     return notes, {**lemmas, **helper_dictionary}
 
 def main():
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    data = request.json
+    sentences = data.get("sentences")
+    lemmas = data.get("dictionary")
 
-    dictionary_folder = "dictionaries"
-    input_folder = "inputs"
-    output_folder = "outputs"
-
-    output_dictionary = f"{timestamp}.txt"
-    output_dictionary_path = os.path.join(dictionary_folder, output_dictionary)
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input_sentences")
-    parser.add_argument("--output", "-o", default=None)
-    parser.add_argument("--dictionary", "-d", default=None)
-
-    args = parser.parse_args()
-    sentences_file = args.input_sentences
-    output_file = args.output
-    dictionary_file = args.dictionary
-
-    if output_file:
-        output_path = os.path.join(output_folder, output_file)
-    else:
-        output_path = os.path.join(output_folder, f"{timestamp}.csv")
-
-    if not dictionary_file:
-        dictionary_file = get_newest_file(dictionary_folder)
+    if not sentences:
+        return jsonify({"error": "No sentences provided"}), 400
+    if not lemmas:
+        return jsonify({"error": "No dictionary provided"}), 400
     
-    sentences = load_sentences(sentences_file)
-    lemmas = load_dictionary(dictionary_file)
-
     notes, lemmas = sentences_to_notes(sentences, lemmas)
-    
-    with open(output_path, "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerows(notes)
 
-    with open(output_dictionary_path, "w", encoding="utf-8") as file:
-        for lemma in lemmas:
-            if not lemma.isdigit():
-                file.write(lemma + "\n")
+    return jsonify({"notes": notes, "dictionary": lemmas}), 200
 
 if __name__ == "__main__":
     main()
