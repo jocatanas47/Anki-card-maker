@@ -65,7 +65,8 @@ def sentences_to_notes(sentences, lemmas):
         notes.append(note)
     return notes, {**lemmas, **helper_dictionary}
 
-def main():
+@app.route("/process_sentences", methods=["POST"])
+def process_sentences():
     data = request.json
     sentences = data.get("sentences")
     lemmas = data.get("dictionary")
