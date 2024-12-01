@@ -1,15 +1,8 @@
-import os
-import csv
-import argparse
 import nltk
 import wiktionary_parser_modified
-from datetime import datetime
 from flask import Flask, request, jsonify
 from deep_translator import GoogleTranslator
 from HanTa import HanoverTagger as ht
-from note_utils import load_dictionary
-from note_utils import load_sentences
-from note_utils import get_newest_file
 
 app = Flask(__name__)
 
