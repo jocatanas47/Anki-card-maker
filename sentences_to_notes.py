@@ -81,4 +81,4 @@ def process_sentences():
     return jsonify({"notes": notes, "dictionary": lemmas}), 200
 
 if __name__ == "__main__":
-    main()
+    app.run()
