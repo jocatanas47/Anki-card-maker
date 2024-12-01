@@ -2,3 +2,4 @@ beautifulsoup4==4.12.3
 deep-translator==1.11.4
 HanTa==1.1.1
 nltk==3.8.1
+Flask=3.1.0
