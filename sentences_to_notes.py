@@ -11,6 +11,8 @@ from note_utils import load_dictionary
 from note_utils import load_sentences
 from note_utils import get_newest_file
 
+app = Flask(__name__)
+
 def get_wiktionary_entries(word):
     parser = wiktionary_parser_modified.WiktionaryParser()
     entry = parser.fetch(word, "german")
