@@ -36,7 +36,7 @@ def sentences_to_notes(sentences, lemmas):
     translator = GoogleTranslator(source="de", target="en")
 
     notes = []
-    helper_dictionary = {}
+    helper_dictionary = set()
     for sentence in sentences:
         note = []
 
@@ -51,7 +51,7 @@ def sentences_to_notes(sentences, lemmas):
             if lemma in helper_dictionary:
                 modified_sentence_parts.append(word)
             else:
-                helper_dictionary[lemma] = True
+                helper_dictionary.add(lemma)
                 if lemma in lemmas:
                     modified_sentence_parts.append(word)
                 else:
@@ -63,14 +63,14 @@ def sentences_to_notes(sentences, lemmas):
         note.append(translator.translate(sentence))
         note.append("".join(definitions_parts))
         notes.append(note)
-    return notes, {**lemmas, **helper_dictionary}
+    return notes, list(lemmas | helper_dictionary)
 
 @app.route("/process_sentences", methods=["POST"])
 def process_sentences():
     data = request.json
     sentences = data.get("sentences")
     lemmas = data.get("dictionary")
-    lemmas = dict(lemmas)
+    lemmas = set(lemmas)
 
     if not sentences:
         return jsonify({"error": "No sentences provided"}), 400
