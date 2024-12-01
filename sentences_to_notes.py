@@ -70,7 +70,7 @@ def process_sentences():
     data = request.json
     sentences = data.get("sentences")
     lemmas = data.get("dictionary")
-    lemmas = set(lemmas)
+    lemmas = dict(lemmas)
 
     if not sentences:
         return jsonify({"error": "No sentences provided"}), 400
