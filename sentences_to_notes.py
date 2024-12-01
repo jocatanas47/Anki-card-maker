@@ -4,6 +4,7 @@ import argparse
 import nltk
 import wiktionary_parser_modified
 from datetime import datetime
+from flask import Flask, request, jsonify
 from deep_translator import GoogleTranslator
 from HanTa import HanoverTagger as ht
 from note_utils import load_dictionary
