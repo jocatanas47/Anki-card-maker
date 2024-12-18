@@ -62,6 +62,8 @@ def sentences_to_notes(sentences, lemmas):
         note["sentence"] = "".join(modified_sentence_parts)
         note["translation"] = translator.translate(sentence)
         note["info"] = "".join(definitions_parts)
+        
+        notes.append(note)
     return notes, list(lemmas | helper_dictionary)
 
 @app.route("/process_sentences", methods=["POST"])
@@ -77,7 +79,6 @@ def process_sentences():
         return jsonify({"error": "No dictionary provided"}), 400
     
     notes, lemmas = sentences_to_notes(sentences, lemmas)
-
     return jsonify({"notes": notes, "dictionary": lemmas}), 200
 
 if __name__ == "__main__":
