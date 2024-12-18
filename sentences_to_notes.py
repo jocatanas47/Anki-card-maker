@@ -38,7 +38,7 @@ def sentences_to_notes(sentences, lemmas):
     notes = []
     helper_dictionary = set()
     for sentence in sentences:
-        note = []
+        note = {}
 
         modified_sentence_parts = []
         definitions_parts = []
@@ -59,10 +59,9 @@ def sentences_to_notes(sentences, lemmas):
                     definitions_parts.extend(word_to_definition(lemma))
             modified_sentence_parts.append(" ")
 
-        note.append("".join(modified_sentence_parts))
-        note.append(translator.translate(sentence))
-        note.append("".join(definitions_parts))
-        notes.append(note)
+        note["sentence"] = "".join(modified_sentence_parts)
+        note["translation"] = translator.translate(sentence)
+        note["info"] = "".join(definitions_parts)
     return notes, list(lemmas | helper_dictionary)
 
 @app.route("/process_sentences", methods=["POST"])
