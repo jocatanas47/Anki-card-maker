@@ -1,4 +1,4 @@
-beautifulsoup4==4.12.3
+git+https://github.com/jocatanas47/WiktionaryParser.git#egg=wiktionaryparser
 deep-translator==1.11.4
 HanTa==1.1.1
 nltk==3.8.1

@@ -1,13 +1,13 @@
 import nltk
-import wiktionary_parser_modified
 from flask import Flask, request, jsonify
+from wiktionaryparser import WiktionaryParser
 from deep_translator import GoogleTranslator
 from HanTa import HanoverTagger as ht
 
 app = Flask(__name__)
 
 def get_wiktionary_entries(word):
-    parser = wiktionary_parser_modified.WiktionaryParser()
+    parser = WiktionaryParser()
     entry = parser.fetch(word, "german")
     return entry
 
