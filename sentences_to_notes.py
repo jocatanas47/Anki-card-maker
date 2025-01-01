@@ -1,4 +1,5 @@
 import nltk
+nltk.download("punkt")
 from flask import Flask, request, jsonify
 from wiktionaryparser import WiktionaryParser
 from deep_translator import GoogleTranslator
