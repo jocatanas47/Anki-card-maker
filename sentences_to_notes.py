@@ -33,7 +33,7 @@ def word_to_definition(word):
     return definition_parts
 
 def sentences_to_notes(sentences, lemmas):
-    tagger = ht.HanoverTagger ('morphmodel_ger.pgz')
+    tagger = ht.HanoverTagger ("morphmodel_ger.pgz")
     translator = GoogleTranslator(source="de", target="en")
 
     notes = []
