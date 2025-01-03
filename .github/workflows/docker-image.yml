@@ -18,6 +18,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ref: rest-branch
+        lfs: true
     - uses: docker/setup-buildx-action@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flashcard-service:latest    
