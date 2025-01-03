@@ -26,7 +26,7 @@ def word_to_definition(word, wiktionary):
         definitions = entry["senses"]
         definition_parts.append("<ol>")
         for definition in definitions:
-            definition_parts.append(f"<li>{definition["glosses"]}</li>")
+            definition_parts.append(f"<li>{definition['glosses']}</li>")
         definition_parts.append("</ol>")
     return definition_parts
 
