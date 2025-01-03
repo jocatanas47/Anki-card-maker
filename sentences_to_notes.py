@@ -1,40 +1,39 @@
+import json
+from collections import defaultdict
 import nltk
 nltk.download("punkt")
 from flask import Flask, request, jsonify
-from wiktionaryparser import WiktionaryParser
 from deep_translator import GoogleTranslator
 from HanTa import HanoverTagger as ht
 
 app = Flask(__name__)
 
-def get_wiktionary_entries(word):
-    parser = WiktionaryParser()
-    entry = parser.fetch(word, "german")
-    return entry
+def preprocess_jsonl_to_dict(jsonl_file):
+    index_dict = defaultdict(list)
+    with open(jsonl_file, 'r') as f:
+        for line in f:
+            obj = json.loads(line)
+            key = obj["word"]
+            index_dict[key].append(obj)
+    return index_dict
 
-def word_to_definition(word):
-    entries = get_wiktionary_entries(word)
+def word_to_definition(word, wiktionary):
+    entries = wiktionary[word]
     definition_parts = []
     for entry in entries:
-        definitions = entry["definitions"]
+        definition_parts.append(entry["head_templates"][0]["expansion"])
+        definition_parts.append("<br>")
+        definitions = entry["senses"]
+        definition_parts.append("<ol>")
         for definition in definitions:
-            definition_parts.append(definition["partOfSpeech"])
-            definition_parts.append("<br>")
-            flag_first = True
-            for line in definition["text"]:
-                if flag_first:
-                    definition_parts.append(f"<b>{line}</b>")
-                    definition_parts.append("<ol>")
-                    flag_first = False
-                else:
-                    definition_parts.append(f"<li>{line}</li>")
-                definition_parts.append("<br>")
-            definition_parts.append("</ol>")
+            definition_parts.append(f"<li>{definition["glosses"]}</li>")
+        definition_parts.append("</ol>")
     return definition_parts
 
 def sentences_to_notes(sentences, lemmas):
     tagger = ht.HanoverTagger ("morphmodel_ger.pgz")
     translator = GoogleTranslator(source="de", target="en")
+    wiktionary = preprocess_jsonl_to_dict("kaikki.org-dictionary-German-words.jsonl")
 
     notes = []
     helper_dictionary = set()
@@ -57,7 +56,7 @@ def sentences_to_notes(sentences, lemmas):
                     modified_sentence_parts.append(word)
                 else:
                     modified_sentence_parts.append(f"<b>{word}</b>")
-                    definitions_parts.extend(word_to_definition(lemma))
+                    definitions_parts.extend(word_to_definition(lemma, wiktionary))
             modified_sentence_parts.append(" ")
 
         note["sentence"] = "".join(modified_sentence_parts)
