@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 COPY sentences_to_notes.py .
 COPY requirements.txt .
+COPY kaikki.org-dictionary-German-words.jsonl .
 
 RUN pip install -r requirements.txt
 
