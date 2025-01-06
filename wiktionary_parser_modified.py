@@ -189,9 +189,10 @@ class WiktionaryParser(object):
         return id_list
 
     def get_word_data(self, language):
-        
         # radi dobro - selektuje samo da bude na tl
-        contents = self.soup.find_all('span', {'class': 'toctext'})
+        contents = self.soup.find_all(['h2', 'h3'])
+        # contents = self.soup.find_all('div', {'class': 'mw-heading'})
+        # contents = [content.contents[0] for content in contents]
         word_contents = []
         start_index = None
         for content in contents:
@@ -202,8 +203,8 @@ class WiktionaryParser(object):
             if contents:
                 return []
             language_heading = self.soup.find_all(
-                "span",
-                {"class": "mw-headline"},
+                "div",
+                {"class": "mw-heading"},
                 string=lambda s: s.lower() == language
             )
             if not language_heading:
@@ -215,8 +216,6 @@ class WiktionaryParser(object):
             if index.startswith(start_index) and content_text in self.INCLUDED_ITEMS:
                 word_contents.append(content)
 
-
-        
         word_data = {
             'examples': self.parse_examples(word_contents),
             'definitions': self.parse_definitions(word_contents),
